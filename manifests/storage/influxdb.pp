@@ -46,6 +46,7 @@
 #   Defaults to 'false'.
 #
 class gnocchi::storage::influxdb(
+  $package_ensure   = 'present',
   $influxdb_host                      = 'localhost',
   $influxdb_port                      = 8086,
   $influxdb_database                  = 'gnocchi',
@@ -64,4 +65,11 @@ class gnocchi::storage::influxdb(
     'storage/influxdb_block_until_data_ingested': value => $influxdb_block_until_data_ingested;
   }
 
+  # Make sure python driver for influxdb is installed (Ubuntu 16.04)
+  package { 'python-influxdb':
+    ensure  => $package_ensure,
+    name    => 'python-influxdb',
+  }
+
+  Package['python-influxdb'] -> Package <| tag == 'gnocchi-package' |>
 }
