@@ -54,7 +54,11 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $::os_service_default.
 #
-# = DEPRECATED PARAMETERS
+# [*middlewares*]
+#   (optional) Middlewares to use.
+#   Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
 #
 # [*keystone_user*]
 #   (optional) DEPRECATED. Use gnocchi::keystone::authtoken::username instead.
@@ -89,6 +93,7 @@ class gnocchi::api (
   $sync_db                      = false,
   $auth_strategy                = 'keystone',
   $enable_proxy_headers_parsing = $::os_service_default,
+  $middlewares                  = $::os_service_default,
   # DEPRECATED PARAMETERS
   $keystone_user                = undef,
   $keystone_tenant              = undef,
@@ -178,6 +183,7 @@ standalone service, or httpd for being run by a httpd server")
     'api/workers':   value => $workers;
     'api/max_limit': value => $max_limit;
     'api/auth_mode': value => $auth_strategy;
+    'api/middlewares': value => $middlewares;
   }
 
   oslo::middleware { 'gnocchi_config':

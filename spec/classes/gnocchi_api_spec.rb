@@ -38,6 +38,7 @@ describe 'gnocchi::api' do
       is_expected.to contain_gnocchi_config('api/workers').with_value('2')
       is_expected.to contain_gnocchi_config('api/auth_mode').with_value('keystone')
       is_expected.to contain_gnocchi_config('oslo_middleware/enable_proxy_headers_parsing').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_gnocchi_config('api/middlewares').with_value('<SERVICE DEFAULT>')
     end
 
     [{:enabled => true}, {:enabled => false}].each do |param_hash|
