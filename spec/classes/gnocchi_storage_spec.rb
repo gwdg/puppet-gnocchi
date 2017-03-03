@@ -30,6 +30,13 @@ describe 'gnocchi::storage' do
         is_expected.to contain_gnocchi_config('storage/coordination_url').with_value('redis://localhost:6379')
         is_expected.to contain_gnocchi_config('storage/metric_processing_delay').with_value(30)
       end
+
+      it 'installs python-redis package' do
+         is_expected.to contain_package(platform_params[:redis_package_name]).with(
+           :name => platform_params[:redis_package_name],
+           :tag  => 'openstack'
+         )
+      end
     end
   end
 

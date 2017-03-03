@@ -42,8 +42,20 @@ class gnocchi::storage(
   }
 
   gnocchi_config {
-    'storage/coordination_url'        : value => $coordination_url;
     'storage/metric_processing_delay' : value => $metric_processing_delay;
   }
 
+  if $coordination_url {
+
+    gnocchi_config {
+      'storage/coordination_url' : value => $coordination_url;
+    }
+
+    if ($coordination_url =~ /^redis/ ) {
+      ensure_resource('package', 'python-redis', {
+        name   => $::gnocchi::params::redis_package_name,
+        tag    => 'openstack',
+      })
+    }
+  }
 }
