@@ -48,7 +48,8 @@ class gnocchi::storage(
   if $coordination_url {
 
     gnocchi_config {
-      'storage/coordination_url' : value => $coordination_url;
+      'storage/coordination_url'        : value => $coordination_url;
+      'storage/metric_processing_delay' : value => $metric_processing_delay;
     }
 
     if ($coordination_url =~ /^redis/ ) {
