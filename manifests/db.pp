@@ -59,10 +59,13 @@ class gnocchi::db (
       'indexer/url': value => $database_connection_real, secret => true;
     }
 
-    package { 'gnocchi-indexer-sqlalchemy':
-      ensure => $ensure_package,
-      name   => $::gnocchi::params::indexer_package_name,
-      tag    => ['openstack', 'gnocchi-package'],
+    # NOTE(tobasco): gnocchi-indexer-sqlalchemy not packaged in Ubuntu for Queens release.
+    if $::osfamily != 'Debian' {
+      package { 'gnocchi-indexer-sqlalchemy':
+        ensure => $package_ensure,
+        name   => $::gnocchi::params::indexer_package_name,
+        tag    => ['openstack', 'gnocchi-package'],
+      }
     }
   }
 
